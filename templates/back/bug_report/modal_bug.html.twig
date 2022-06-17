@@ -1,0 +1,55 @@
+<dialog aria-labelledby="fr-bug-report-modal-title" id="fr-bug-report-modal" class="fr-modal" role="dialog" >
+    <div class="fr-container fr-container--fluid fr-container-md">
+        <div class="fr-grid-row fr-grid-row--center">
+            <div class="fr-col-12 fr-col-md-8 fr-col-lg-8">
+                <div class="fr-modal__body">
+                    <div class="fr-modal__header">
+                        <button class="fr-link--close fr-link" aria-controls="fr-bug-report-modal">Fermer</button>
+                    </div>
+                    <div class="fr-modal__content">
+                        <h1 id="fr-bug-report-modal-title" class="fr-modal__title fr-mb-0">
+                            <span class="fr-fi-alert-line fr-fi--lg"></span>
+                            Votre message au support
+                        </h1>
+                        <span class="fr-hint-text">Dans le cadre de l'amélioration constante du service Histologe, nous vous invitions à nous contacter si vous rencontrez un problème, avez une suggestion d'amélioration ou une remarque.</span>
+                        <div class="fr-grid-row fr-grid-row--middle fr-grid-row--center fr-mt-5w fr-hidden" id="bug-report-success">
+                            <div class="fr-col fr-text--center">
+                                <h3 class="fr-text-label--green-emeraude"><span class="fr-fi-checkbox-circle-line"></span> Votre message à bien été transmis.</h3>
+                            </div>
+                        </div>
+                        <form action="{{ path('back_bug_report') }}" class="needs-validation fr-hidden" name="bug-report" id="bug-report-form">
+                            <div class="fr-input-group">
+                                <label class="fr-label" for="bug-report-content">
+                                    <strong>Décrivez le ou les problème(s) rencontré(s)</strong><sup class="fr-text-default--error">*</sup>
+                                    <span class="fr-hint-text"><strong>Une capture d'écran sera jointe</strong> à votre message.</span>
+                                </label>
+                                <textarea class="fr-input fr-input--no-resize" id="bug-report-content"
+                                          name="bug-report[content]" required minlength="10" rows="10"></textarea>
+                                <p class="fr-error-text fr-hidden">
+                                    Merci de proposer une rapide description (minimum 10 caractères).
+                                </p>
+                            </div>
+                            <input type="hidden" id="bug-report-route" name="bug-report[route]" value="{{ app.request.get('_route') }}">
+                            <input type="hidden" id="bug-report-url"  name="bug-report[url]" value="{{ app.request.uri }}">
+                            <input type="hidden" id="bug-report-token"   name="_token" value="{{ csrf_token('user_bug_report') }}">
+                        </form>
+                    </div>
+                    <div class="fr-modal__footer">
+                        <ul class="fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
+                            <li>
+                                <button type="submit" form="bug-report-form" class="fr-btn fr-fi-check-line" id="bug-report-submit" disabled>
+                                    Soumettre
+                                </button>
+                            </li>
+                            <li>
+                                <button class="fr-btn fr-btn--secondary fr-fi-close-line" aria-controls="fr-bug-report-modal">
+                                    Fermer
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</dialog>

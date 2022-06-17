@@ -1,0 +1,161 @@
+{% set etats = ['moyen','grave','très grave'] %}
+{% set scores = [2,4,5] %}
+<template id="situation_add_critere_row">
+    <div class="fr-col-12">
+        <h4 class="fr-mb-0">Nouveau critère</h4>
+    </div>
+    <div class="fr-input-group fr-col-11 fr-mb-0">
+        <label for="situation_criteres_label_new__ID__" class="fr-label">Nom<sup
+                    class="fr-text-label--red-marianne">*</sup></label>
+        <input type="text" id="situation_criteres_label_new__ID__"
+               name="situation[criteres][new][__ID__][label]" required="required"
+               class="fr-input">
+        <p class="fr-error-text fr-hidden">
+            Vous devez renseigner le label du critere.
+        </p>
+    </div>
+    <div class="fr-input-group fr-col-1 fr-text--right fr-mb-0">
+        <label for="situation_criteres_delete_new__ID__" class="fr-label">Suppr.</label>
+        <button class="fr-btn fr-btn--danger fr-fi-delete-line fr-mt-3v partenaire-user-delete"
+                id="situation_criteres_delete_new__ID__" {# data-user-delete="{{ path('back_partenaire_user_delete',{user:user.id}) }}" data-token="{{ csrf_token('partenaire_user_delete_'~user.id) }}" #}></button>
+    </div>
+    <div class="fr-input-group fr-col-12">
+        <label for="situation_criteres_description_new__ID__" class="fr-label">Description
+            (quand tout va bien)<sup class="fr-text-label--red-marianne">*</sup></label>
+        <textarea type="text" id="situation_criteres_description_new__ID__"
+                  name="situation[criteres][new][__ID__][description]" required="required"
+                  class="fr-input"></textarea>
+        <p class="fr-error-text fr-hidden">
+            Vous devez renseigner la description du critére.
+        </p>
+    </div>
+    <div class="fr-col-12">
+        <h4 class="fr-mb-0">Criticités</h4>
+        <div class="fr-grid-row fr-grid-row--gutters">
+            {% for index,etat in etats %}
+                <div class="fr-col-4">
+                    <label for="situation_criteres_criticite_new_label{{ index }}"
+                           class="fr-label"><strong>{{ etat|capitalize }}</strong><sup
+                                class="fr-text-label--red-marianne">*</sup></label>
+                    <textarea type="text" id="situation_criteres_criticite_new_label{{ index }}"
+                              name="situation[criteres][new][__ID__][criticites][{{ index }}][label]"
+                              required="required"
+                              class="fr-input fr-input--no-resize"
+                              rows="3"></textarea>
+                    <input type="hidden" name="situation[criteres][new][__ID__][criticites][{{ index }}][score]" value="{{ scores[index] }}">
+                    <p class="fr-error-text fr-hidden">
+                        Vous devez renseigner la description de la criticité
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</template>
+{{ form_start(form,{attr:{'class':'needs-validation','novalidate':true}}) }}
+<fieldset class="fr-fieldset fr-fieldset--inline fr-mb-5v fr-mb-md-0">
+    <div class="fr-fieldset__content fr-grid-row fr-grid-row--gutters">
+        <div class="fr-input-group fr-col-12 fr-col-md-9 fr-col-lg-10 fr-pl-0 fr-pl-md-0">
+            <label for="{{ form.label.vars.id }}" class="fr-label">Concerne (label)<sup
+                        class="fr-text-label--red-marianne">*</sup></label>
+            {{ form_widget(form.label) }}
+            <p class="fr-error-text fr-hidden">
+                Vous devez renseigner le sujet de la situation.
+            </p>
+        </div>
+        <div class="fr-select-group fr-col-12 fr-col-md-3 fr-col-lg-2 ">
+            <label for="{{ form.isActive.vars.id }}" class="fr-label">Active<sup
+                        class="fr-text-label--red-marianne">*</sup></label>
+            {{ form_widget(form.isActive) }}
+            <p class="fr-error-text fr-hidden">
+                Vous devez indiquer l'état de la situation.
+            </p>
+        </div>
+    </div>
+</fieldset>
+<hr>
+<div id="situation_add_critere_placeholder"></div>
+<div class="fr-grid-row">
+    <div class="fr-col-12 fr-text--center">
+        <button class="fr-btn fr-btn--secondary fr-fi-add-circle-line fr-btn--icon-left" id="situation_add_critere">
+            Ajouter un critère
+        </button>
+    </div>
+</div>
+<hr style="visibility: hidden">
+<hr>
+<h2 class="fr-h3">Critères</h2>
+
+<ul class="fr-accordions-group">
+    {% for critere in situation.criteres|reverse %}
+        {% if not critere.isArchive %}
+            <li class="situation-row-critere">
+                <section class="fr-accordion">
+                    <h3 class="fr-accordion__title">
+                        <a href="#" class="fr-accordion__btn" aria-expanded="false"
+                           aria-controls="accordion-critere-{{ critere.id }}">{{ critere.label }}</a>
+                    </h3>
+                    <div class="fr-collapse fr-background-alt--blue-france" id="accordion-critere-{{ critere.id }}">
+                        <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle fr-mb-5v">
+                            <div class="fr-input-group fr-col-11 fr-mb-0">
+                                <label for="situation_criteres_label_{{ critere.id }}" class="fr-label">Nom<sup
+                                            class="fr-text-label--red-marianne">*</sup></label>
+                                <input type="text" id="situation_criteres_label_{{ critere.id }}"
+                                       name="situation[criteres][{{ critere.id }}][label]" required="required"
+                                       class="fr-input" value="{{ critere.label }}">
+                                <p class="fr-error-text fr-hidden">
+                                    Vous devez renseigner le label du critere.
+                                </p>
+                            </div>
+                            <div class="fr-input-group fr-col-1 fr-text--right fr-mb-0">
+                                <label for="situation_criteres_delete_{{ critere.id }}" class="fr-label">Suppr.</label>
+                                <button class="fr-btn fr-btn--danger fr-fi-delete-line fr-mt-3v situation-critere-delete"
+                                        id="situation_criteres_delete_{{ critere.id }}" data-delete="{{ path('back_situation_critere_delete',{critere:critere.id}) }}" data-token="{{ csrf_token('situation_critere_delete_'~critere.id) }}" ></button>
+                            </div>
+                            <div class="fr-input-group fr-col-12">
+                                <label for="situation_criteres_description_{{ critere.id }}" class="fr-label">Description
+                                    (quand tout va bien)<sup class="fr-text-label--red-marianne">*</sup></label>
+                                <textarea type="text" id="situation_criteres_description_{{ critere.id }}"
+                                          name="situation[criteres][{{ critere.id }}][description]" required="required"
+                                          class="fr-input">{{ critere.description }}</textarea>
+                                <p class="fr-error-text fr-hidden">
+                                    Vous devez renseigner la description du critére.
+                                </p>
+                            </div>
+                        </div>
+                        <h4 class="fr-mb-0">Criticités</h4>
+                        <div class="fr-grid-row fr-grid-row--gutters">
+
+                            {% for index,criticite in critere.criticites %}
+                                <div class="fr-col-4">
+                                    <label for="situation_criteres_criticite_label_{{ criticite.id }}"
+                                           class="fr-label"><strong>{{ etats[index]|capitalize }}</strong><sup
+                                                class="fr-text-label--red-marianne">*</sup></label>
+                                    <textarea type="text" id="situation_criteres_criticite_label_{{ criticite.id }}"
+                                              name="situation[criteres][{{ critere.id }}][criticites][{{ criticite.id }}][label]"
+                                              required="required"
+                                              class="fr-input fr-input--no-resize"
+                                              rows="3">{{ criticite.label }}</textarea>
+                                    <p class="fr-error-text fr-hidden">
+                                        Vous devez renseigner la description de la criticité
+                                    </p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </section>
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>
+<div class="fr-grid-row fr-mt-5v">
+    <div class="fr-col-6">
+        <a class="fr-btn fr-btn--secondary fr-fi-arrow-left-line fr-btn--icon-left"
+           href="{{ path('back_situation_critere_criticite_index') }}">Retourner à
+            la
+            liste</a>
+    </div>
+    <div class="fr-col-6 fr-text--right">
+        <button class="fr-btn fr-fi-check-line fr-btn--icon-left" type="submit"> Enregistrer</button>
+    </div>
+</div>
+{{ form_end(form) }}

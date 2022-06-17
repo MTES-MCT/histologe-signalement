@@ -1,0 +1,53 @@
+{% extends 'back/base_bo.html.twig' %}
+
+{% block title %}Partenaire index{% endblock %}
+
+{% block content %}
+    <section class="fr-grid-row fr-grid-row--middle fr-p-5v ">
+        <div class="fr-col-6">
+            <h1 class="fr-h2 fr-mb-0">Partenaires</h1>
+        </div>
+        <div class="fr-col-6 fr-text--right">
+            <a class="fr-btn fr-btn--icon-left fr-fi-add-circle-line" href="{{ path('back_partenaire_new') }}">Ajouter
+                un partenaire</a>
+        </div>
+    </section>
+    <section class="fr-col-12 fr-table fr-table--bordered fr-pt-0">
+        <table class="fr-display-inline-table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Type</th>
+                <th>INSEE</th>
+                <th>Mail générique ?</th>
+                <th class="fr-text--right">actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for partenaire in partenaires %}
+                <tr class="partenaire-row">
+                    <td>{{ partenaire.id }}</td>
+                    <td>{{ partenaire.nom }}</td>
+                    <td>{{ partenaire.isCommune ? 'Commune':'Partenaire' }}</td>
+                    <td>{{ partenaire.insee|serialize }}</td>
+                    <td>{{ partenaire.email }}</td>
+                    <td class="fr-text--right">
+                            <a href="{{ path('back_partenaire_edit', {'id': partenaire.id}) }}"
+                               class="fr-btn fr-fi-eye-fill fr-btn--sm"></a>
+                            <button data-delete="{{ path('back_partenaire_delete', {'id': partenaire.id}) }}"
+                                    data-token="{{ csrf_token('partenaire_delete_' ~ partenaire.id) }}"
+                                    class="fr-btn fr-btn--danger fr-fi-delete-line fr-btn--sm partenaire-row-delete"></button>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+
+{% endblock %}

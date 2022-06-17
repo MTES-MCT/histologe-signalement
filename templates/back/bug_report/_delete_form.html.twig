@@ -1,0 +1,4 @@
+<form method="post" action="{{ path('back_user_report_delete', {'id': report.id}) }}" onsubmit="return confirm('Êtes-vous sûre de vouloir taguer ce bug comme résolu ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('user_report_delete_' ~ report.id) }}">
+    <button class="fr-btn fr-btn--success fr-fi-check-line fr-btn--sm" title="Taguer comme résolu"></button>
+</form>

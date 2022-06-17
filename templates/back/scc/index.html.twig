@@ -1,0 +1,47 @@
+{% extends 'back/base_bo.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <section class="fr-grid-row fr-grid-row--middle fr-p-5v ">
+        <div class="fr-col-6">
+            <h1 class="fr-h2 fr-mb-0">Situations, critères et criticités</h1>
+        </div>
+        <div class="fr-col-6 fr-text--right">
+            <a class="fr-btn fr-btn--icon-left fr-fi-add-circle-line" href="{{ path('back_situation_critere_criticite_new') }}">Ajouter une situation</a>
+        </div>
+    </section>
+    <section class="fr-col-12 fr-table fr-table--bordered fr-pt-0">
+        <table class="fr-display-inline-table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Concerne</th>
+                <th>Active</th>
+                <th class="fr-text--right">actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for situation in situations %}
+                <tr class="{{ situation.isActive ? 'fr-background-alt--green-emeraude ':'fr-background-contrast--red-marianne' }}">
+                    <td>{{ situation.id }}</td>
+                    <td><strong>{{ situation.label|capitalize }}</strong></td>
+                    <td>{{ situation.isActive ? 'Active':'Inactive' }}</td>
+                    <td class="fr-text--right">
+                        <div class="fr-grid-row fr-grid-row--right">
+                            <a href="{{ path('back_situation_critere_criticite_edit', {'id': situation.id}) }}" class="fr-btn fr-fi-eye-fill fr-btn--sm"></a>
+                            {{ include('back/scc/_delete_form.html.twig') }}
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+
+{% endblock %}
